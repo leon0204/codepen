@@ -1,0 +1,43 @@
+$color-primary: #1691d0;
+
+@import url('https://fonts.googleapis.com/css?family=Sahitya');
+
+textarea {
+	box-sizing: border-box;
+	background-color: transparent;
+	height: 5em;
+	width: 100% !important;
+	padding: 1rem;
+	border: 0;
+	border-bottom: 3px solid $color-primary;
+	margin: 0;
+	
+	color: $color-primary;
+	font-family: 'Sahitya', serif;
+	font-size: 1.6em;
+	line-height: 1.4;
+	resize: none;
+	
+	&:focus {
+		outline: 3px solid #333;
+	}
+	
+	&::selection {
+		background-color: #333;
+		color: #fff;
+	}
+}
+
+canvas {
+	display: block;
+	height: auto;
+	width: 100%;
+}
+
+.container {
+	max-width: 36em;
+	padding-left: 1em;
+	padding-right: 1em;
+	margin-left: auto;
+	margin-right: auto;
+}

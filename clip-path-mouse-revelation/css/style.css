@@ -1,0 +1,121 @@
+body {
+  margin: 0;
+  height: 100vh;
+}
+* {
+  box-sizing: border-box;
+}
+.back {
+  position: relative;
+  background: #ff4e4e;
+  color: #fff;
+}
+.front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  justify-content: flex-end;
+}
+.back,
+.front {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 50px;
+}
+h1 {
+  font-family: 'Rubik Mono One', sans-serif;
+  font-size: 72px;
+}
+.front h1 {
+  position: relative;
+  color: #ff4e4e;
+  text-align: right;
+}
+svg {
+  position: absolute;
+  opacity: 0;
+  -webkit-transform: translateX(50px);
+  transform: translateX(50px);
+  -webkit-transition: opacity .5s ease-in-out, transform 1s ease-out;
+  transition: opacity .5s ease-in-out, transform 1s ease-out;
+  max-height: 100%;
+}
+.back svg {
+  right: 0;
+}
+.front svg {
+  left: 0;
+  -webkit-transform: translateX(-50px);
+  transform: translateX(-50px);
+}
+svg * {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+}
+.on svg {
+  opacity: .3;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+svg * {
+  animation: stroke 5s ease-in-out infinite;
+}
+.front circle {
+  animation: none;
+  stroke-dashoffset: 0;
+}
+polyline {
+  animation-delay: 1s;
+}
+polygon {
+  animation-delay: 2s;
+}
+circle {
+  animation-delay: 3s;
+}
+rect {
+  animation-delay: 4s;
+}
+line:nth-child(2n) {
+  animation-delay: 1s;
+}
+line:nth-child(3n) {
+  animation-delay: 2s;
+}
+@-webkit-keyframes stroke {
+  20% {
+    stroke-dashoffset: 0;
+  }
+  40% {
+    stroke-dashoffset: -500;
+  }
+}
+@keyframes stroke {
+  20% {
+    stroke-dashoffset: 0;
+  }
+  40% {
+    stroke-dashoffset: -500;
+  }
+}
+
+@media(max-width:800px) {
+  .back {
+    height: 60vh;
+  }
+  .front {
+    top: 40vh;
+    height: 60vh;
+  }
+  .front {
+    clip-path: polygon(0% 25%, 100% 0%, 100% 100%, 0% 100%) !important;
+    z-index: 1;
+  }
+  h1 {
+    font-size: 36px;
+  }
+}

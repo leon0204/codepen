@@ -1,0 +1,207 @@
+class Vector2 {
+	constructor(x = 0, y = 0) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	add(v) {
+		this.x += v.x;
+		this.y += v.y;
+		return this;
+	}
+	
+	multiplyScalar(s) {
+		this.x *= s;
+		this.y *= s;
+		return this;
+	}
+	
+	clone() {
+		return new Vector2(this.x, this.y);
+	}
+	
+	static fromScalar(s) {
+		return new Vector2(s, s);
+	}
+}
+
+class Clock {
+	constructor() {
+		this.reset();
+		this.update();
+	}
+	
+	reset() {
+		this.start = Clock.now();
+		this.previous = Clock.now();
+	}
+	
+	update() {
+		const now = Clock.now();
+		
+		this.delta = now - this.previous;
+		this.elapsed += this.delta;
+		this.previous = now;
+	}
+	
+	static now() {
+		return Date.now() / 1000;
+	}
+}
+
+class Walker {
+	constructor(seed, position = Vector2.fromScalar(0)) {
+		this.seed = seed;
+		this.position = position;
+		
+		this.birth = Clock.now();
+		this.lifetime = 3 + seed * 1;
+		
+		this.heading = seed * Math.PI * 2;
+		this.headingDirection = Math.sin(this.heading) < 0 ? -1 : 1;
+	}
+	
+	getAge() {
+		const now = Clock.now();
+		return (now - this.birth) / this.lifetime;
+	}
+	
+	isAlive() {
+		const age = this.getAge();
+		return age <= 1;
+	}
+	
+	update(delta) {
+		if (!this.isAlive()) {
+			return;
+		}
+		
+		this.heading += (
+			// Set rotate speed by seed
+			this.seed / 4 *
+			// Gives back and forth swirls
+			Math.sin(this.getAge() * Math.PI * 2) *
+			// Move in specified direction
+			this.headingDirection
+		);
+		
+		const velocity = new Vector2(
+			Math.sin(this.heading),
+			Math.cos(this.heading)
+		).multiplyScalar(50 * delta)
+		
+		this.position.add(velocity);
+	}
+	
+	render(context) {
+		if (!this.isAlive()) {
+			return;
+		}
+		
+		const scale = Math.min(context.canvas.width, context.canvas.height);
+		const radius = (1 - this.getAge()) * 4 * scale / 1024;
+		
+		context.beginPath();
+		context.arc(this.position.x, this.position.y, radius, 0, Math.PI * 2);
+		context.fill();
+	}
+}
+
+class TextToSymbolFactory {
+	constructor() {
+		this.canvas = document.createElement('canvas');
+		this.context = this.canvas.getContext('2d');
+		
+		this.clock = new Clock;
+		this.walkers = [];
+		
+		this.loop = this.animate.bind(this);
+	}
+	
+	setSize(width, height) {
+		const pixelRatio = window.devicePixelRatio;
+		
+		this.canvas.width = width * pixelRatio;
+		this.canvas.height = height * pixelRatio * .8;
+	}
+	
+	start(data) {
+		const { width, height } = this.canvas;
+		const scale = Math.min(width, height) / 3;
+		const segments = new Array(64);
+		
+		this.clock.reset();
+		
+		for (let i = 0; i < segments.length; i++) {
+			const charIndex = i / segments.length * (data.length - 1);
+			const charIndexBefore = Math.floor(charIndex);
+			const charIndexAfter = Math.ceil(charIndex);
+			const charIndexRemain = charIndex - charIndexBefore;
+			
+			const charCodeBefore = data.charCodeAt(charIndexBefore);
+			const charCodeAfter = data.charCodeAt(charIndexAfter);
+			
+			// Lerp into charcode
+			const charCode = charCodeBefore + (charCodeAfter - charCodeBefore) * charIndexRemain;
+			
+			segments[i] = charCode;
+		}
+		
+		this.walkers = new Array(segments.length);
+		
+		segments.forEach((charCode, index) => {
+			const seed = (charCode % 16) / 16;
+			const progress = index / segments.length;
+			const angle = progress * Math.PI * 2;
+			
+			const position = new Vector2(
+				Math.cos(angle) * scale,
+				Math.sin(angle) * scale
+			);
+			
+			this.walkers.push(new Walker(seed, position));
+		});
+		
+		this.context.clearRect(0, 0, width, height);
+		this.animate();
+	}
+	
+	animate() {
+		requestAnimationFrame(this.loop);
+		
+		this.clock.update();
+		this.render();
+	}
+	
+	render() {
+		const { width, height } = this.canvas;
+		
+		this.context.save();
+		this.context.translate(width * .5, height * .5);
+		
+		this.walkers.forEach((walker) => {
+			walker.update(this.clock.delta);
+			walker.render(this.context);
+		});
+		
+		this.context.restore();
+	}
+}
+
+const canvasContainer = document.querySelector('.js-canvas-container');
+const inputElement = document.querySelector('.js-input');
+
+const textToSymbolFactory = new TextToSymbolFactory;
+textToSymbolFactory.setSize(
+	window.innerWidth,
+	window.innerHeight
+);
+textToSymbolFactory.start(inputElement.value);
+
+canvasContainer.appendChild(textToSymbolFactory.canvas);
+
+inputElement.addEventListener('input', (e) => {
+	const data = e.target.value;
+	
+	textToSymbolFactory.start(data);
+});

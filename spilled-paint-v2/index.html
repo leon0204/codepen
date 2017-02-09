@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Spilled Paint v2</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		var slider = new gooSlider('body');
+		
+		
+		var l1,l2;
+		$('body').click(function(){
+			var c = 'hsla('+ (Math.floor(Math.random()*7) * 50) +',56%,68%,1)';
+			if(c != l1 && c != l2){
+				slider.wave(c, function(){});
+				l2 = l1;
+				l1 = c;
+			} else {
+				$('body').click();
+			}
+		});
+		
+		var count = 5,
+		    cur = 0;
+		function start(){
+			slider.wave('hsla('+ (Math.floor(Math.random()*7) * 50) +',82%,64%,1)', function(){});
+			cur++;
+			if(cur<count){
+				setTimeout(function(){
+					start();
+				}, 1500)
+			}
+		}
+		start();
+	});
+</script>
+
+<div id="info">Click to spill more paint!</div>
+  <script src='https://codepen.io/darrylhuffman/pen/zogYQW.js'></script>
+
+    <script src="js/index.js"></script>
+
+</body>
+</html>

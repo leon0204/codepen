@@ -1,0 +1,169 @@
+$c: #47a;
+$cd: darken($c, 30%);
+$crater: rgba(0,0,0,.1);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:before, :after {
+  content: '';
+  display: block;
+  position: absolute;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: $cd;
+}
+
+.landscape {
+  position: relative;
+  height: 500px;
+  background: #222;
+  overflow: hidden;
+}
+
+.moon {
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  width: 350px;
+  height: 350px;
+  margin: 0 0 0 -175px;
+  border-radius: 50%;
+  background: #ccc;
+}
+
+.moon:after {
+  top: 100px;
+  left: 100px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: $crater;
+  box-shadow:
+    120px 80px 0 $crater,
+    100px -60px 0 -20px $crater,
+    -70px 40px 0 -20px $crater,
+    -20px -50px 0 -15px $crater,
+    -20px 120px 0 -15px $crater,
+    50px 50px 0 -15px $crater;
+    ;
+}
+
+/* Animation Setup */
+
+.layer {
+  position: absolute;
+  bottom: 0;
+  animation: 10s linear infinite alternate;
+}
+
+.l1 { z-index: 1; animation-name: l1; }
+.l2 { z-index: 2; animation-name: l2; }
+.l3 { z-index: 3; animation-name: l3; }
+
+@keyframes l1 { 100% { transform: translate3d(-100px,0,0) } }
+@keyframes l2 { 100% { transform: translate3d(-200px,0,0) } }
+@keyframes l3 { 100% { transform: translate3d(-500px,0,0) } }
+
+/* Lantern Layer */
+
+.l3 {
+  bottom: 0;
+  width: 1000%;
+  background: $cd;
+}
+
+.la {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 50px;
+  background: $cd;
+  margin-right: 20px;
+}
+
+.la:before {
+  top: 5px;
+  left: -10px;
+  width: 22px;
+  height: 2px;
+  background: $cd;
+}
+
+.la:after {
+  bottom: 0;
+  left: -2px;
+  width: 6px;
+  height: 12px;
+  background: $cd;
+}
+
+.l {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px #fff, 0 0 25px #fff, 0 0 50px #fff;
+}
+
+.l:nth-child(1) { left: -10px; }
+.l:nth-child(2) { right: -10px; }
+
+@for $i from 1 through 20 {
+  .la:nth-child(#{$i}) {
+    left: 100 * $i + px;
+  }
+}
+
+/* Mountain Layer */
+
+.hills div {
+  border-radius: 8%;
+  transform: rotate(45deg);
+}
+
+.hills div {
+  position: absolute;
+}
+
+.l1 .hills div {
+  bottom: -350px;
+  width: 500px;
+  height: 500px;
+  background: lighten($cd, 5%);
+}
+
+.l2 .hills div {
+  bottom: -400px;
+  width: 500px;
+  height: 500px;
+  background: lighten($cd, 10%);
+}
+
+@for $i from 1 through 8 {
+  .l1 .hills div:nth-child(#{$i}) {
+    left: 400 * $i + -600px;
+  }
+}
+
+@for $i from 1 through 8 {
+  .l2 .hills div:nth-child(#{$i}) {
+    left: 400 * $i + -400px;
+  }
+}
+
+/* Codepen Preview Mode */
+
+@media only screen and (max-height: 450px) {
+  .landscape {
+    margin-top: -150px;
+  }
+}

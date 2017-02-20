@@ -28,4 +28,3 @@ author : http://codepen.io/darrylhuffman/
 
 author : http://codepen.io/timseverien/
 
-#  just for test

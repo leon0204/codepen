@@ -16,7 +16,6 @@
     - [使用 Notifiable Trait](#using-the-notifiable-trait)
     - [使用 Notification Facade](#using-the-notification-facade)
     - [指定发送频道](#specifying-delivery-channels)
-    - [队列化通知](#queueing-notifications)
 - [数据库通知](#database-notifications)
     - [先决条件](#database-prerequisites)
     - [格式化数据库通知](#formatting-database-notifications)

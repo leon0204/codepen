@@ -12,7 +12,7 @@
     - [自定义接受者](#customizing-the-recipient)
     - [自定义主题](#customizing-the-subject)
     - [自定义模板](#customizing-the-templates)
-- [Markdown邮件通知](#markdown-mail-notifications)
+- [通知](#markdown-mail-notifications)
     - [生成消息](#generating-the-message)
     - [生成消息](#generating-the-message)
     - [生成消息](#generating-the-message)

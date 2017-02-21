@@ -12,7 +12,7 @@
     - [自定义接受者](#customizing-the-recipient)
     - [自定义主题](#customizing-the-subject)
     - [自定义模板](#customizing-the-templates)
-- [发送通知](#sending-notifications)
+- [Markdown 邮件通知](#markdown-mail-notifications)
     - [使用 Notifiable Trait](#using-the-notifiable-trait)
     - [使用 Notification Facade](#using-the-notification-facade)
     - [指定发送频道](#specifying-delivery-channels)

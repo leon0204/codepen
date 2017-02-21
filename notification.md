@@ -10,7 +10,6 @@
      */
     public function toMail($notifiable)
     {
-       
         return (new MailMessage)->view(
             'emails.name', ['invoice' => $this->invoice]
         );

@@ -10,9 +10,11 @@
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->subject('Notification Subject')
-                    ->line('...');
+       
+        return (new MailMessage)->view(
+            'emails.name', ['invoice' => $this->invoice]
+        );
     }
+
     
 11111
